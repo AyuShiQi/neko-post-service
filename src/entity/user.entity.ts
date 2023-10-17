@@ -3,7 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeor
 @Entity()
 export class User {
   @PrimaryGeneratedColumn("uuid")
-  id: number
+  id: string
 
   @Column({type: "varchar", length: 40})
   username: string

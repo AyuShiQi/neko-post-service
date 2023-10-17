@@ -4,44 +4,42 @@ import { Request, Response } from 'express'
 
 import { UserService } from './user.service'
 
+// import * as bodyParser from 'body-parser'
+
+import Result from '../common/Result'
+
+
 @Controller('user')
 export class UserController {
     constructor (private readonly userService: UserService) {}
     /**
-     * 验证token值并返回基础信息
+     * 验证token值并返回基础信息，暂时用id代替token
      * @param req 
      */
     @Get('/verify')
-    verifyToken (@Req() req: Request, @Res() res: Response) {
-      console.log('come')
+    async verifyToken (@Req() req: Request, @Res() res: Response) {
       const userToken = req.get('token')
-      if (!userToken) return res.json({
-        code: 500,
-        data: null,
-        msg: '无效token'
-      })
+      if (!userToken) return res.json(Result.getResult(null, '无token传值', 500))
+      const isExist = await this.userService.verifyToken(userToken)
+      
+      if (!isExist) return res.json(Result.getResult(null, '无效token', 500))
 
-      // res.set('Access-Control-Allow-Origin', '127.0.0.1::3000')
-      return res.json({
-        code: 200,
-        data: null,
-        msg: '有token'
-      })
+      // 返回用户基础信息
+      const info = await this.userService.getUserInfo(userToken)
+      return res.json(Result.getResult(info, '成功获取', 200))
     }
 
-    // @Get('/base')
-    // getBaseInfo (@Res() res: Response) {
-    //   // res.set('Access-Control-Allow-Origin', '127.0.0.1::3000')
-    //   return res.sendFile(path.resolve(__dirname, '../public/user.json'))
-    // }
     /**
      * 
-     * @param req 
+     * @param req body为json
      * 返回用户基础信息和token
      */
     @Post('/create')
-    createNewUser (@Req() req: Request) {
-      console.log(req.body)
-      this.userService.createNewUser()
+    async createNewUser (@Req() req: Request, @Res() res: Response) {
+      const {username, password} = req.body
+      console.log(username, password)
+      const token = await this.userService.createNewUser(username, password)
+      if (token !== false) res.json(Result.getResult({ token }, '创建成功'))
+      else res.json(Result.getResult(null, '用户已存在', 500))
     }
 }
