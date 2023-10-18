@@ -8,7 +8,6 @@ import { UserService } from './user.service'
 
 import Result from '../common/Result'
 
-
 @Controller('user')
 export class UserController {
     constructor (private readonly userService: UserService) {}
@@ -41,5 +40,19 @@ export class UserController {
       const token = await this.userService.createNewUser(username, password)
       if (token !== false) res.json(Result.getResult({ token }, '创建成功'))
       else res.json(Result.getResult(null, '用户已存在', 500))
+    }
+
+    /**
+     * 
+     * @param req body为json
+     * 返回用户基础信息和token
+     */
+    @Post('/login')
+    async login (@Req() req: Request, @Res() res: Response) {
+      const {username, password} = req.body
+      // console.log(username, password)
+      const userInfo = await this.userService.login(username, password)
+      if (userInfo) res.json(Result.getResult(userInfo, '登录成功'))
+      else res.json(Result.getResult(null, '登录失败', 500))
     }
 }

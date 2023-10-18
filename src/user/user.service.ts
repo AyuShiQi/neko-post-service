@@ -31,15 +31,6 @@ export class UserService {
     return newUser.id
   }
 
-  async findUserWithUserName (username: string): Promise<boolean> {
-    const res = await this.user.find({
-      where: {
-        username
-      }
-    })
-    return res && res.length !== 0
-  }
-
   async getUserInfo (id: string) {
     const info = await this.findUserWithId(id)
     if (!info) return info
@@ -47,6 +38,24 @@ export class UserService {
       username: info.username,
       create_time: info.create_time
     }
+  }
+
+  async login (username: string, password: string) {
+    const targetUser = await this.findUserWithUserName(username)
+    if (!targetUser) return null
+    return password === targetUser.password ? {
+      username: targetUser.username,
+      token: targetUser.id
+    } :null
+  }
+
+  private async findUserWithUserName (username: string) {
+    const res = await this.user.find({
+      where: {
+        username
+      }
+    })
+    return res ? res[0] : null
   }
 
   private async findUserWithId (id: string) {
