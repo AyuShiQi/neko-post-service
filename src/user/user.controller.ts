@@ -43,7 +43,7 @@ export class UserController {
     }
 
     /**
-     * 
+     * 登录接口
      * @param req body为json
      * 返回用户基础信息和token
      */
