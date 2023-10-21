@@ -29,7 +29,7 @@ export class UserController {
     }
 
     /**
-     * 
+     * 创建用户
      * @param req body为json
      * 返回用户基础信息和token
      */
