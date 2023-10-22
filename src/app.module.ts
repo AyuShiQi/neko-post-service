@@ -20,7 +20,7 @@ import { ProjModule } from './proj/proj.module';
   }),
     UserModule,
     ApisModule,
-    // ProjModule
+    ProjModule
   ],
   controllers: [],
   providers: [],

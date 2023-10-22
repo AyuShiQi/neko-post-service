@@ -51,7 +51,7 @@ export class ProjService {
         uid
       }
     })
-    return res ? res[0] : null
+    return res
   }
 
   async findListWithUidAndPid (uid: string, pid: string) {

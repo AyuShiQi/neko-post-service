@@ -26,7 +26,7 @@ export class UserService {
     newUser.username = username
     newUser.password = password
     await this.user.save(newUser)
-    console.log(newUser.id)
+    // console.log(newUser.id)
     // 分配token
     return newUser.id
   }
@@ -35,6 +35,7 @@ export class UserService {
     const info = await this.findUserWithId(id)
     if (!info) return info
     return {
+      uid: info.id,
       username: info.username,
       create_time: info.create_time
     }
@@ -44,6 +45,7 @@ export class UserService {
     const targetUser = await this.findUserWithUserName(username)
     if (!targetUser) return null
     return password === targetUser.password ? {
+      uid: targetUser.id,
       username: targetUser.username,
       token: targetUser.id
     } :null

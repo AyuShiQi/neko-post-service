@@ -37,8 +37,11 @@ export class UserController {
     async createNewUser (@Req() req: Request, @Res() res: Response) {
       const {username, password} = req.body
       console.log(username, password)
-      const token = await this.userService.createNewUser(username, password)
-      if (token !== false) res.json(Result.getResult({ token }, '创建成功'))
+      const uid = await this.userService.createNewUser(username, password)
+      if (uid !== false) res.json(Result.getResult({
+        uid,
+        token: uid
+      }, '创建成功'))
       else res.json(Result.getResult(null, '用户已存在', 500))
     }
 

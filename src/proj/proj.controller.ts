@@ -16,8 +16,9 @@ export class ProjController {
    */
   @Get('/list')
   async getList (@Req() req: Request, @Res() res: Response) {
-    const { uid } = req.body
-    const proj = await this.projService.findListWithUid(uid)
+    const { uid } = req.query
+    console.log(uid)
+    const proj = await this.projService.findListWithUid(uid as string)
     if (proj) {
       res.json(Result.getResult(proj, '查询成功', 200))
     } else {
