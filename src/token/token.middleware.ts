@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from '../entity/user.entity'
+import Result from '../common/Result'
 
 @Injectable()
 export class TokenMiddleware implements NestMiddleware {
@@ -17,5 +18,8 @@ export class TokenMiddleware implements NestMiddleware {
       }
     })
     if (isExist) next()
+    else {
+      res.json(Result.getResult(null, '请传入正确的token', 400))
+    }
   }
 }
