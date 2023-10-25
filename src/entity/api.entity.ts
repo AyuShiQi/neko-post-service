@@ -13,6 +13,10 @@ export class Api {
   @PrimaryColumn({type: "varchar", length: 36})
   pid: string
 
+  // 所属项目组 group的aid
+  @Column({type: "varchar", length: 36})
+  gid: string
+
   // 接口标题   
   @Column({type: "varchar", length: 40})
   title: string
@@ -24,10 +28,6 @@ export class Api {
   // 接口类型（基础还是普通）
   @Column({type: "integer"})
   type: number // 0 表示基础配置，1表示普通接口, 2表示项目组(分类文件夹)
-
-  // 所属项目组 group的aid
-  @Column({type: "integer"})
-  gid: number
 
   @Column({type: "integer"})
   method: number

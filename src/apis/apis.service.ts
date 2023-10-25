@@ -12,11 +12,12 @@ export class ApisService {
    * @param uid 用户id
    * @param pid 项目id
    */
-  async getList (uid: string, pid: string) {
+  async getList (uid: string, pid: string, type = 1) {
     return await this.api.find({
       where: {
         uid,
-        pid
+        pid,
+        type
       }
     })
   }
@@ -70,6 +71,7 @@ export class ApisService {
       newBase.uid = uid
       newBase.pid = pid
       newBase.type = 0
+      newBase.title = '基础配置'
       return await this.api.save(newBase)
     }
     return has
