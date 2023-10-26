@@ -58,9 +58,9 @@ export class ApisController {
    */
   @Post('/createGroup')
   async createGroup (@Req() req: Request, @Res() res: Response) {
-    const { uid, pid, title } = req.body
+    const { uid, pid, title, gid } = req.body
     // const result = await this.apisService.getList(uid, pid, title)
-    const result = await this.apisService.createGroup(uid, pid, title)
+    const result = await this.apisService.createGroup(uid, pid, title, gid)
     if (result) res.json(Result.getResult(result, '创建成功', 200))
     else res.json(Result.getResult(result, '创建成功', 500))
   }
@@ -72,14 +72,14 @@ export class ApisController {
    */
   @Post('/create')
   async createApi (@Req() req: Request, @Res() res: Response) {
-    const { uid, pid, title } = req.body
-    const result = await this.apisService.createApi(uid, pid, title)
+    const { uid, pid, title, gid } = req.body
+    const result = await this.apisService.createApi(uid, pid, title, gid)
     if (result) res.json(Result.getResult(result, '创建成功', 200))
     else res.json(Result.getResult(result, '创建成功', 500))
   }
 
   /**
-   * 创建项目接口
+   * 创建项目基础接口
    * @param req 
    * @param res 
    */
@@ -88,5 +88,29 @@ export class ApisController {
     const { uid, pid } = req.body
     const result = await this.apisService.getBase(uid, pid)
     res.json(Result.getResult(result, '返回成功', 200))
+  }
+
+  /**
+   * 更新接口信息（全部接口，包括组、基础、接口）
+   * @param req 
+   * @param res 
+   */
+  @Post('/update')
+  async updateApi (@Req() req: Request, @Res() res: Response) {
+    const { aid, uid, pid, type } = req.body
+    const update = req.body.update as {
+      gid?: string,
+      title?: string,
+      desc?: string,
+      method?: string,
+      url?: string,
+      params?: string,
+      headers?: string,
+      authorization?: string,
+      body?: string
+    }
+    const result = await this.apisService.updateApi(aid, uid, pid, type, update)
+    if (result) res.json(Result.getResult(result, '修改成功', 200))
+    else res.json(Result.getResult(result, '修改失败', 500))
   }
 }
