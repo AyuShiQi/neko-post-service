@@ -9,7 +9,7 @@ import Result from '../common/Result'
 export class TokenMiddleware implements NestMiddleware {
   constructor(@InjectRepository(User) private readonly user: Repository<User>){}
   async use(req: Request, res: Response, next: () => void) {
-    console.log('apis 中间件')
+    console.log(req.url, 'apis 中间件')
     const token = req.get('token')
     if (!token) return
     const isExist = await this.user.find({
