@@ -23,8 +23,9 @@ export class ApisController {
     //     header
     //   }
     // }）
-    const { uid, pid } = req.params
-    const result = await this.apisService.getList(uid, pid)
+    const { uid, pid } = req.query
+    // console.log(req.query, uid, pid)
+    const result = await this.apisService.getList(uid as string, pid as string)
     if (result) res.json(Result.getResult(result, '查询成功', 200))
     else res.json(Result.getResult(result, '查询失败', 500))
   }
@@ -36,8 +37,8 @@ export class ApisController {
    */
   @Get('/groupList')
   async getGroupList (@Req() req: Request, @Res() res: Response) {
-    const { uid, pid } = req.params
-    const result = await this.apisService.getList(uid, pid, 2)
+    const { uid, pid } = req.query
+    const result = await this.apisService.getList(uid as string, pid as string, 2)
     if (result) res.json(Result.getResult(result, '查询成功', 200))
     else res.json(Result.getResult(result, '查询失败', 500))
   }
