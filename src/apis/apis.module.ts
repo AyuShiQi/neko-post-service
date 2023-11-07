@@ -11,6 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   providers: [ApisService],
   controllers: [ApisController]
 })
+
 export class ApisModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(TokenMiddleware).forRoutes('apis')
