@@ -5,11 +5,12 @@ import { UserService } from '../user/user.service';
 import { ApisService } from '../apis/apis.service';
 import { Proj } from 'src/entity/proj.entity';
 import { User } from 'src/entity/user.entity';
+import { Api } from 'src/entity/api.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TokenMiddleware } from 'src/token/token.middleware';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Proj]), TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([Proj]), TypeOrmModule.forFeature([User]), TypeOrmModule.forFeature([Api])],
   controllers: [ProjController],
   providers: [ProjService, UserService, ApisService]
 })

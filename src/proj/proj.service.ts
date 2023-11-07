@@ -25,12 +25,14 @@ export class ProjService {
     return null
   }
 
-  async updateProj (userInfo: { uid: string, pid: string, npname: string }) {
-    const { uid, pid, npname } = userInfo
+  async updateProj (uid: string, pid: string, npname: string) {
     // token
     // uid, username, pname(判断是否存在)
     const tProj = await this.findListWithUidAndPid(uid, pid)
     if (!tProj) return null
+    // 判断是否有相同名字存在
+    const sameNameProj = await this.findListWithUidAndPname(uid, npname)
+    if (sameNameProj) return null
     // 修改proj的信息
     tProj.pname = npname
     return await this.proj.save(tProj)

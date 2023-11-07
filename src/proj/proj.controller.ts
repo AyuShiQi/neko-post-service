@@ -52,8 +52,9 @@ export class ProjController {
    */
   @Post('/update')
   async updateProj (@Req() req: Request, @Res() res: Response) {
-    console.log(req.body)
-    const proj = await this.projService.updateProj(req.body)
+    const { uid, pid, npname } = req.body
+    console.log(uid, pid, npname)
+    const proj = await this.projService.updateProj(uid, pid, npname)
     if (proj) {
       res.json(Result.getResult(proj, '修改成功', 200))
     } else {
