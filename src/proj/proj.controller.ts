@@ -3,12 +3,13 @@ import { Controller, Get, Post, Req, Res } from '@nestjs/common'
 import { Request, Response } from 'express'
 import { ProjService } from './proj.service'
 import { UserService } from '../user/user.service'
+import { ApisService } from '../apis/apis.service';
 
 import Result from '../common/Result'
 
 @Controller('proj')
 export class ProjController {
-  constructor (private readonly projService: ProjService, private readonly userService: UserService) {}
+  constructor (private readonly projService: ProjService, private readonly userService: UserService, private readonly apisService: ApisService) {}
   /**
    * 返回项目列表
    * @param req 
@@ -69,8 +70,11 @@ export class ProjController {
   async deleteProj (@Req() req: Request, @Res() res: Response) {
     // token
     // uid, username, pname(判断是否存在) (json格式)
-    console.log(req.body)
-    const result = await this.projService.deleteProj(req.body)
+    const { uid, pid } = req.body
+    console.log('proj/delete', uid, pid)
+    // 删除相关接口
+    let result = await this.apisService.delApisWithPid(uid, pid)
+    result = await this.projService.deleteProj(uid, pid)
     if (result) {
       res.json(Result.getResult(null, '删除成功', 200))
     } else {

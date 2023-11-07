@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class ProjService {
   constructor (@InjectRepository(Proj) private readonly proj: Repository<Proj>) {}
+
   async createProj (userInfo: { uid: string, pname: string }) {
     const { uid, pname } = userInfo
     // token
@@ -35,11 +36,10 @@ export class ProjService {
     return await this.proj.save(tProj)
   }
 
-  async deleteProj (userInfo: { uid: string, pid: string }) {
-    const { uid, pid } = userInfo
+  async deleteProj (uid: string, pid: string) {
     // token
     // uid, username, pname(判断是否存在)
-    const tproj = await this.findListWithUidAndPname(uid, pid)
+    const tproj = await this.findListWithUidAndPid(uid, pid)
     if (!tproj) return false
     this.proj.remove(tproj)
     return true
