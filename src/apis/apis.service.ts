@@ -157,7 +157,7 @@ export class ApisService {
    */
   async delApiGroup (uid: string, pid: string, aid: string) {
     const group = await this.findApiWithAidAndType(uid, pid, aid, 2)
-    if (group) return false
+    if (!group) return false
     const apis = await this.findApiWithGid(uid, pid, aid)
     for (const api of apis) {
       await this.api.remove(api)
