@@ -105,4 +105,30 @@ export class ApisController {
     if (result) res.json(Result.getResult(result, '修改成功', 200))
     else res.json(Result.getResult(result, '修改失败', 500))
   }
+
+  /**
+   * 删除普通接口
+   * @param req 
+   * @param res 
+   */
+  @Post('/delete')
+  async deleteApi (@Req() req: Request, @Res() res: Response) {
+    const { aid, uid, pid } = req.body
+    const result = await this.apisService.delApi(uid, pid, aid)
+    if (result) res.json(Result.getResult(result, '删除成功', 200))
+    else res.json(Result.getResult(result, '删除失败', 500))
+  }
+
+  /**
+   * 删除组
+   * @param req 
+   * @param res 
+   */
+  @Post('/deleteGroup')
+  async deleteApiGroup (@Req() req: Request, @Res() res: Response) {
+    const { aid, uid, pid } = req.body
+    const result = await this.apisService.delApiGroup(uid, pid, aid)
+    if (result) res.json(Result.getResult(result, '删除成功', 200))
+    else res.json(Result.getResult(result, '删除失败', 500))
+  }
 }

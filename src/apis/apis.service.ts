@@ -138,6 +138,35 @@ export class ApisService {
   }
 
   /**
+   * 删除一个普通接口
+   * @param uid
+   * @param pid
+   * @param aid
+   */
+  async delApi (uid: string, pid: string, aid: string) {
+    const api = await this.findApiWithAidAndType(uid, pid, aid, 1)
+    if (api) await this.api.remove(api)
+    return !!api
+  }
+
+  /**
+   * 删除一个组
+   * @param uid
+   * @param pid
+   * @param aid
+   */
+  async delApiGroup (uid: string, pid: string, aid: string) {
+    const group = await this.findApiWithAidAndType(uid, pid, aid, 2)
+    if (group) return false
+    const apis = await this.findApiWithGid(uid, pid, aid)
+    for (const api of apis) {
+      await this.api.remove(api)
+    }
+    await this.api.remove(group)
+    return true
+  }
+
+  /**
    * 通过项目id删除接口
    * @param uid 
    * @param pid 
@@ -148,6 +177,18 @@ export class ApisService {
     for (const api of apis) {
       await this.api.remove(api)
     }
+    return true
+  }
+
+  /**
+   * 通过项目id和aid删除接口
+   * @param uid 
+   * @param pid 
+   */
+  async delApisWithPidAndAid (uid: string, pid: string, aid: string) {
+    const api = await this.findApiWithAid(uid, pid, aid)
+    if (!api) return false
+    this.api.remove(api)
     return true
   }
 
@@ -233,6 +274,24 @@ export class ApisService {
     return await this.api.findOne({
       where: {
         aid,
+        uid,
+        pid
+      }
+    })
+  }
+
+  /**
+   * 通过接口gid找到一个接口
+   * @param uid
+   * @param pid
+   * @param title
+   * @param type
+   * @returns 一个接口
+   */
+  async findApiWithGid (uid: string, pid: string, gid: string) {
+    return await this.api.find({
+      where: {
+        gid,
         uid,
         pid
       }
