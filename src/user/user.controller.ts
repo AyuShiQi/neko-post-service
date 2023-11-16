@@ -35,7 +35,7 @@ export class UserController {
      */
     @Post('/create')
     async createNewUser (@Req() req: Request, @Res() res: Response) {
-      const {username, password} = req.body
+      const { username, password } = req.body
       console.log(username, password)
       const uid = await this.userService.createNewUser(username, password)
       if (uid !== false) res.json(Result.getResult({
