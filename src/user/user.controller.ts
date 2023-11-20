@@ -55,7 +55,8 @@ export class UserController {
       const {username, password} = req.body
       // console.log(username, password)
       const userInfo = await this.userService.login(username, password)
-      if (userInfo) res.json(Result.getResult(userInfo, '登录成功'))
-      else res.json(Result.getResult(null, '登录失败', 500))
+      if (userInfo === 0) res.json(Result.getResult(null, '用户不存在', 500))
+      else if (userInfo === 1) res.json(Result.getResult(null, '密码错误', 501))
+      res.json(Result.getResult(userInfo, '登录成功'))
     }
 }

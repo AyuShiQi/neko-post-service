@@ -43,12 +43,12 @@ export class UserService {
 
   async login (username: string, password: string) {
     const targetUser = await this.findUserWithUserName(username)
-    if (!targetUser) return null
+    if (!targetUser) return 0 // 用户不存在
     return password === targetUser.password ? {
       uid: targetUser.id,
       username: targetUser.username,
       token: targetUser.id
-    } :null
+    } : 1 // 密码错误
   }
 
   private async findUserWithUserName (username: string) {
