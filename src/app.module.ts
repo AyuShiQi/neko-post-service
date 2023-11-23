@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { ApisModule } from './apis/apis.module';
 import { ProjModule } from './proj/proj.module';
+import { RespModule } from './resp/resp.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { ProjModule } from './proj/proj.module';
   }),
     UserModule,
     ApisModule,
-    ProjModule
+    ProjModule,
+    RespModule
   ],
   controllers: [],
   providers: [],
