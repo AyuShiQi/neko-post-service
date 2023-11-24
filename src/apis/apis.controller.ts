@@ -2,11 +2,14 @@ import { Controller, Get, Post, Req, Res } from '@nestjs/common'
 import { Request, Response } from 'express'
 
 import { ApisService } from './apis.service'
+import { RespService } from '../resp/resp.service'
 import Result from '../common/Result'
 
 @Controller('apis')
 export class ApisController {
-  constructor (private readonly apisService: ApisService) {}
+  constructor (
+    private readonly apisService: ApisService,
+    private readonly respService: RespService) {}
   /**
    * 获取接口列表
    * @param req
@@ -115,6 +118,8 @@ export class ApisController {
   async deleteApi (@Req() req: Request, @Res() res: Response) {
     const { aid, uid, pid } = req.body
     const result = await this.apisService.delApi(uid, pid, aid)
+    // 还需要删除对应的resp记录
+    if (result) await this.respService.delAllResponse(uid, pid, aid)
     if (result) res.json(Result.getResult(result, '删除成功', 200))
     else res.json(Result.getResult(result, '删除失败', 500))
   }

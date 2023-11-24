@@ -42,8 +42,13 @@ export class RespController {
    * @param res 
    */
   @Post('update_type')
-  async updateResp (@Req() req: Request, @Res() res: Response) {
-    const resps = await this.respService.getAllResponse(req.body)
-    res.json(Result.getResult(resps, resps ? '获取成功' : '获取失败', resps ? 200 : 500))
+  async updateRespType (@Req() req: Request, @Res() res: Response) {
+    const status = await this.respService.updateRespType(req.body)
+    if (status === 200) {
+      res.json(Result.getResult(null, '更新成功', 200))
+    } else {
+      res.json(Result.getResult(null, '更新失败', status))
+    }
+    
   } 
 }

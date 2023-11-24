@@ -54,6 +54,22 @@ export class RespService {
     return resps
   }
 
+  /**
+   * 更新响应类型
+   * @param option
+   * @returns Resps
+   */
+  async updateRespType (option: { uid: string, pid: string, aid: string, rid: string, type: number }) {
+    const { uid, pid, aid, rid, type } = option
+    const target = await this.findRespWithRid(uid, pid, aid, rid)
+    if (!target) return 500
+    if (target.type !== type) {
+      target.type = type
+      await this.resp.save(target)
+    }
+    return 200
+  }
+
   findAllResp (uid: string, pid: string, aid: string) {
     return this.resp.find({
       where: {
@@ -110,6 +126,20 @@ export class RespService {
       return flag
     }
     return true
+  }
+
+  /**
+   * 删除全部response
+   * @param uid
+   * @param pid
+   * @param aid
+   */
+  async delAllResponse (uid: string, pid: string, aid: string) {
+    const resps = await this.findAllResp(uid, pid, aid)
+    for (const item of resps) {
+      await this.resp.delete(item)
+    }
+    return 200
   }
 }
  
