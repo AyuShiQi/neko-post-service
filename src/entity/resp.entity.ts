@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, PrimaryColumn } from 'typeorm'
 
 @Entity()
-export class Api {
+export class Resp {
   @PrimaryGeneratedColumn("uuid")
   rid: string
 
@@ -17,9 +17,9 @@ export class Api {
   @PrimaryColumn({type: "varchar", length: 36})
   uid: string
 
-  // 响应类型（当前cur还是历史）
+  // 响应类型（历史记录是否被固定）
   @Column({type: "integer"})
-  type: number // 0 表示当前，1表示历史记录
+  type: number // 1 表示固定记录，0表示历史记录（被固定记录是无法被删除的）
 
   // 响应码
   @Column({type: "integer"})

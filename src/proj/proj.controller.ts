@@ -3,13 +3,16 @@ import { Controller, Get, Post, Req, Res } from '@nestjs/common'
 import { Request, Response } from 'express'
 import { ProjService } from './proj.service'
 import { UserService } from '../user/user.service'
-import { ApisService } from '../apis/apis.service';
+import { ApisService } from '../apis/apis.service'
 
 import Result from '../common/Result'
 
 @Controller('proj')
 export class ProjController {
-  constructor (private readonly projService: ProjService, private readonly userService: UserService, private readonly apisService: ApisService) {}
+  constructor (
+    private readonly projService: ProjService,
+    private readonly userService: UserService,
+    private readonly apisService: ApisService) {}
   /**
    * 返回项目列表
    * @param req 
