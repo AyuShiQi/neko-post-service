@@ -12,6 +12,7 @@ export class RespService {
    * @param option 配置项
    */
   async saveResp (option: Omit<Resp, 'rid' | 'create_time' | 'update_time' | 'type'>) {
+    console.log(option)
     const { uid, pid, aid, status, statusText, headers, body, request } = option
     const res = await this.deleteOldestNormalResp(uid, pid, aid)
     if (!res) return 501 // 501表示保存响应已达最大上限
@@ -38,7 +39,7 @@ export class RespService {
   async delResponse (option: { uid: string, pid: string, aid: string, rid: string }) {
     const { uid, pid, aid, rid } = option
     const target = await this.findRespWithRid(uid, pid, aid, rid)
-    if (target && target.type === 0) await this.resp.delete(target)
+    if (target && target.type === 0) await this.resp.remove(target)
     return target && target.type === 0 ? 200 : 500
   }
 
@@ -50,7 +51,7 @@ export class RespService {
   async getAllResponse (option: { uid: string, pid: string, aid: string }) {
     const { uid, pid, aid } = option
     const resps = await this.findAllResp(uid, pid, aid)
-    resps.sort((a, b) => b.type === a.type ? b.create_time.getMilliseconds() - a.create_time.getMilliseconds() : b.type - a.type)
+    resps.sort((a, b) => b.type === a.type ? b.create_time.getTime() - a.create_time.getTime() : b.type - a.type)
     return resps
   }
 
@@ -118,7 +119,7 @@ export class RespService {
       for (const res of resps) {
         // 普通的才能被删除
         if (res.type === 0) {
-          await this.resp.delete(res)
+          await this.resp.remove(res)
           flag = true
           break
         }
@@ -137,7 +138,7 @@ export class RespService {
   async delAllResponse (uid: string, pid: string, aid: string) {
     const resps = await this.findAllResp(uid, pid, aid)
     for (const item of resps) {
-      await this.resp.delete(item)
+      await this.resp.remove(item)
     }
     return 200
   }
