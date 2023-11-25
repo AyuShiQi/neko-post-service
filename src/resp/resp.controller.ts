@@ -10,7 +10,7 @@ export class RespController {
   constructor (private readonly respService: RespService) {}
   @Get('list')
   async getAllResp (@Req() req: Request, @Res() res: Response) {
-    const resps = await this.respService.getAllResponse(req.body)
+    const resps = await this.respService.getAllResponse(req.query as any)
     res.json(Result.getResult(resps, resps ? '获取成功' : '获取失败', resps ? 200 : 500))
   }
 
