@@ -8,6 +8,16 @@ export class MockService {
   constructor (@InjectRepository(Mock) private readonly mock: Repository<Mock>) {}
   async getAllMock (opt: Pick<Mock, 'uid' | 'pid'>) {
     const { uid, pid } = opt
+    const root = await this.findRootMock(uid, pid)
+    if (!root) await this.saveMock({
+      uid,
+      pid,
+      gid: null,
+      title: '根路径',
+      option: '[]',
+      desc: '',
+      path: ''
+    })
     const mocks = await this.mock.find({
       where: {
         uid,
@@ -18,15 +28,26 @@ export class MockService {
   }
 
   async saveMock (opt: Omit<Mock, 'mid' | 'create_time' | 'update_time'>) {
-    const { uid, pid, gid, option, desc, path } = opt
+    const { uid, pid, gid, option, desc, path, title } = opt
     const newMock = new Mock()
     newMock.uid = uid
     newMock.pid = pid
     newMock.gid = gid
+    newMock.title = title
     newMock.option = option
     newMock.desc = desc
     newMock.path = path
     const res = await this.mock.save(newMock)
     return res ? 200 : 500
+  }
+
+  async findRootMock (uid: string, pid: string) {
+    return this.mock.findOne({
+      where: {
+        uid,
+        pid,
+        gid: null
+      }
+    }) 
   }
 }

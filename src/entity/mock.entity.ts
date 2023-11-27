@@ -18,6 +18,10 @@ export class Mock {
   @PrimaryColumn({type: "varchar", length: 36})
   gid: string | null
 
+  // 标题
+  @Column({type: "varchar", length: 255})
+  title: string
+
   // 路径接口描述  
   @Column({type: "text", nullable: true})
   desc: string
@@ -27,7 +31,7 @@ export class Mock {
   path: string
 
   // 配置  
-  @Column({type: "text", nullable: true, default: '[]'})
+  @Column({type: "text", nullable: true})
   option: string
 
   @UpdateDateColumn({type: "timestamp"})
