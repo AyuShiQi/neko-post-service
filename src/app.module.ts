@@ -4,6 +4,7 @@ import { UserModule } from './user/user.module';
 import { ApisModule } from './apis/apis.module';
 import { ProjModule } from './proj/proj.module';
 import { RespModule } from './resp/resp.module';
+import { MockModule } from './mock/mock.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { RespModule } from './resp/resp.module';
     UserModule,
     ApisModule,
     ProjModule,
-    RespModule
+    RespModule,
+    MockModule
   ],
   controllers: [],
   providers: [],

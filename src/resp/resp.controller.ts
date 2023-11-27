@@ -49,6 +49,5 @@ export class RespController {
     } else {
       res.json(Result.getResult(null, '更新失败', status))
     }
-    
-  } 
+  }
 }
