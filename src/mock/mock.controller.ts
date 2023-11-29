@@ -17,6 +17,7 @@ export class MockController {
   async saveMock (@Req() req: Request, @Res() res: Response) {
     const status = await this.mockService.saveMock(req.body)
     if (status === 200) res.json(Result.getResult(null, '成功添加', 200))
+    else if (status === 501) res.json(Result.getResult(null, '路径已存在！', 501))
     else {
       res.json(Result.getResult(null, '添加失败', 500))
     }

@@ -28,14 +28,15 @@ export class MockService {
   }
 
   async saveMock (opt: Omit<Mock, 'mid' | 'create_time' | 'update_time'>) {
-    const { uid, pid, gid, option, desc, path, title } = opt
+    const { uid, pid, gid, path, title } = opt
+    // 存在相同path，不可创建
+    const target = await this.findMockWithPath(uid, pid, gid, path)
+    if (target) return 501
     const newMock = new Mock()
     newMock.uid = uid
     newMock.pid = pid
     newMock.gid = gid
     newMock.title = title
-    newMock.option = option
-    newMock.desc = desc
     newMock.path = path
     const res = await this.mock.save(newMock)
     return res ? 200 : 500
@@ -49,5 +50,16 @@ export class MockService {
         gid: null
       }
     }) 
+  }
+
+  async findMockWithPath (uid: string, pid: string, gid: string, path: string) {
+    return this.mock.findOne({
+      where: {
+        uid,
+        pid,
+        gid,
+        path
+      }
+    })
   }
 }

@@ -15,7 +15,7 @@ export class Mock {
   uid: string
 
   // 虚拟服务所属组的id   
-  @PrimaryColumn({type: "varchar", length: 36})
+  @Column({type: "varchar", length: 36, nullable: true})
   gid: string | null
 
   // 标题
