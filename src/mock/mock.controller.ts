@@ -37,17 +37,17 @@ export class MockController {
   }
 
   /**
-   * 更新type
+   * 更新opt
    * @param req 
    * @param res 
    */
   @Post('update')
-  async updateRespType (@Req() req: Request, @Res() res: Response) {
-    // const status = await this.respService.updateRespType(req.body)
-    // if (status === 200) {
-    //   res.json(Result.getResult(null, '更新成功', 200))
-    // } else {
-    //   res.json(Result.getResult(null, '更新失败', status))
-    // }
+  async updatePath (@Req() req: Request, @Res() res: Response) {
+    const status = await this.mockService.updateMockOpt(req.body)
+    if (status === 200) {
+      res.json(Result.getResult(null, '更新成功', 200))
+    } else {
+      res.json(Result.getResult(null, '更新失败', status))
+    }
   }
 }

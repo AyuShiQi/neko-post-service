@@ -42,6 +42,27 @@ export class MockService {
     return res ? 200 : 500
   }
 
+  async updateMockOpt (option: any) {
+    const { uid, pid, gid, mid, opt } = option
+    const target = await this.findWithMid(uid, pid, gid, mid)
+    if (target) {
+      target.option = opt
+      await this.mock.save(target)
+    }
+    return target ? 200 : 500
+  }
+
+  async findWithMid (uid: string, pid: string, gid: string, mid: string) {
+    return this.mock.findOne({
+      where: {
+        uid,
+        pid,
+        gid,
+        mid
+      }
+    })
+  }
+
   async findRootMock (uid: string, pid: string) {
     return this.mock.findOne({
       where: {
