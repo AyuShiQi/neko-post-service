@@ -75,15 +75,25 @@ export class MockService {
 }
 
   async deleteMock (option: any) {
+    const allMock = [] as Mock[]
+    const findMockChild = async (tgid: string) => {
+      const mocks = await this.findMockWithGid(uid, pid, tgid)
+      mocks.forEach(mock => {
+        allMock.push(mock)
+        findMockChild(mock.mid)
+      })
+    }
     const { uid, pid, gid, mid } = option
-    if (gid === null) return 500
-    const res = await this.mock.delete({
-      uid,
-      pid,
-      gid,
-      mid
-    })
-    return res.raw === 0 ? 501 : 200
+    // 根路径不可删除
+    if (gid === null) return 501
+    const target = await this.findWithMid(uid, pid, gid, mid)
+    if (!target) return 500
+    allMock.push(target)
+    findMockChild(target.mid)
+    for (const m of allMock) {
+      await this.mock.remove(m)
+    }
+    return 200
   }
 
   async findWithMid (uid: string, pid: string, gid: string, mid: string) {
@@ -114,6 +124,16 @@ export class MockService {
         pid,
         gid,
         path
+      }
+    })
+  }
+
+  async findMockWithGid (uid: string, pid: string, gid: string) {
+    return this.mock.find({
+      where: {
+        uid,
+        pid,
+        gid
       }
     })
   }
