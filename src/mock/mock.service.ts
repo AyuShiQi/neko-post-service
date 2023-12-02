@@ -52,6 +52,40 @@ export class MockService {
     return target ? 200 : 500
   }
 
+  async updateMockPath (option: any) {
+    const { uid, pid, gid, mid, path } = option
+    const exist = await this.findMockWithPath(uid, pid, gid, path)
+    if (exist) return 501
+    const target = await this.findWithMid(uid, pid, gid, mid)
+    if (target) {
+      target.path = path
+      await this.mock.save(target)
+    }
+    return target ? 200 : 500
+  }
+
+  async updateMockTitle (option: any) {
+    const { uid, pid, gid, mid, title } = option
+    const target = await this.findWithMid(uid, pid, gid, mid)
+    if (target) {
+      target.title = title
+      await this.mock.save(target)
+    }
+    return target ? 200 : 500
+}
+
+  async deleteMock (option: any) {
+    const { uid, pid, gid, mid } = option
+    if (gid === null) return 500
+    const res = await this.mock.delete({
+      uid,
+      pid,
+      gid,
+      mid
+    })
+    return res.raw === 0 ? 501 : 200
+  }
+
   async findWithMid (uid: string, pid: string, gid: string, mid: string) {
     return this.mock.findOne({
       where: {

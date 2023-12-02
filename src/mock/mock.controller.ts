@@ -24,16 +24,16 @@ export class MockController {
   }
 
   /**
-   * 接口只允许删除普通接口
+   * 只允许删除非根路径
    */
   @Post('delete')
   async delResp (@Req() req: Request, @Res() res: Response) {
-    // const status = await this.respService.delResponse(req.body)
-    // if (status === 200) {
-    //   res.json(Result.getResult(null, '删除成功', 200))
-    // } else {
-    //   res.json(Result.getResult(null, '删除失败', 500))
-    // }
+    const status = await this.mockService.deleteMock(req.body)
+    if (status === 200) {
+      res.json(Result.getResult(null, '删除成功', 200))
+    } else {
+      res.json(Result.getResult(null, '删除失败', 500))
+    }
   }
 
   /**
@@ -42,8 +42,30 @@ export class MockController {
    * @param res 
    */
   @Post('update')
-  async updatePath (@Req() req: Request, @Res() res: Response) {
+  async updateOpt (@Req() req: Request, @Res() res: Response) {
     const status = await this.mockService.updateMockOpt(req.body)
+    if (status === 200) {
+      res.json(Result.getResult(null, '更新成功', 200))
+    } else {
+      res.json(Result.getResult(null, '更新失败', status))
+    }
+  }
+
+  @Post('update-path')
+  async updateMockPath (@Req() req: Request, @Res() res: Response) {
+    const status = await this.mockService.updateMockPath(req.body)
+    if (status === 200) {
+      res.json(Result.getResult(null, '更新成功', 200))
+    } else if (status === 501) {
+      res.json(Result.getResult(null, '路径已存在', status))
+    } else {
+      res.json(Result.getResult(null, '更新失败', status))
+    }
+  }
+
+  @Post('update-title')
+  async updateMockTitle (@Req() req: Request, @Res() res: Response) {
+    const status = await this.mockService.updateMockTitle(req.body)
     if (status === 200) {
       res.json(Result.getResult(null, '更新成功', 200))
     } else {
