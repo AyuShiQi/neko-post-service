@@ -26,7 +26,7 @@ export class Resp {
   status: number
 
   // 响应吗
-  @Column({type: "varchar", length: 20})
+  @Column({type: "varchar", length: 100})
   statusText: string
 
   // 响应headers

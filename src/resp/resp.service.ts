@@ -23,7 +23,7 @@ export class RespService {
     newResp.aid = aid
     // 都先为不固定的
     newResp.type = 0
-    newResp.status = status
+    newResp.status = typeof status === 'number' ? status : -1
     newResp.statusText = statusText
     newResp.headers = headers
     newResp.body = body
